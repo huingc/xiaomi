@@ -6,11 +6,9 @@
 <typeAliases>
     <package name="com.huing.pojo"/>
 </typeAliases>
-<!--    <mappers>-->
-<!--        <mapper resource="mapper/AddressMapper.xml" />-->
-<!--        <mapper resource="mapper/CartMapper.xml" />-->
-<!--        <mapper resource="mapper/DistrictMapper.xml" />-->
-<!--        <mapper resource="mapper/ProductMapper.xml" />-->
-<!--        <mapper resource="mapper/UserMapper.xml" />-->
-<!--    </mappers>-->
+
+    <plugins>
+        <!--分页插件 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
 </configuration>

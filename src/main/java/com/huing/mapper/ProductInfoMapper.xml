@@ -16,4 +16,10 @@
         select *
         from product_info
     </select>
+
+    <select id="selectAllByPage" resultMap="ProductInfoMap">
+        select *
+        from product_info
+        order by p_id desc
+    </select>
 </mapper>

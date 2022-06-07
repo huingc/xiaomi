@@ -1,5 +1,6 @@
 package com.huing.service;
 
+import com.github.pagehelper.PageInfo;
 import com.huing.pojo.ProductInfo;
 
 import java.util.List;
@@ -10,4 +11,7 @@ import java.util.List;
  */
 public interface ProductInfoService {
     List<ProductInfo> getAll();
+
+    //分页
+    PageInfo splitPage(int pageNum,int pageSize);
 }
