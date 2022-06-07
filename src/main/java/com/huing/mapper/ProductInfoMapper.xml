@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huing.mapper.ProductInfoMapper">
+    <resultMap id="ProductInfoMap" type="com.huing.pojo.ProductInfo">
+        <id column="p_id" property="pId" jdbcType="INTEGER"/>
+        <result column="p_name" property="pName" jdbcType="VARCHAR"/>
+        <result column="p_content" property="pContent" jdbcType="VARCHAR"/>
+        <result column="p_price" property="pPrice" jdbcType="INTEGER"/>
+        <result column="p_image" property="pImage" jdbcType="VARCHAR"/>
+        <result column="p_number" property="pNumber" jdbcType="INTEGER"/>
+        <result column="type_id" property="typeId" jdbcType="INTEGER"/>
+        <result column="p_date" property="pDate" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="ProductInfoMap">
+        select *
+        from product_info
+    </select>
+</mapper>
