@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huing.mapper.ProductInfoMapper;
 import com.huing.pojo.ProductInfo;
+import com.huing.pojo.vo.ProductInfoVo;
 import com.huing.service.ProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,22 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Override
     public int deleteBatch(String[] ids) {
         return productInfoMapper.deleteBatch(ids);
+    }
+
+    @Override
+    public List<ProductInfo> selectCondition(ProductInfoVo vo) {
+        return productInfoMapper.selectCondition(vo);
+    }
+
+    @Override
+    public PageInfo<ProductInfo> splitPageVo(ProductInfoVo vo, int pageSize) {
+        //分页插件使用PageHelper工具完成分页设置
+        if (vo.getPage() == null){
+            vo.setPage(1);
+        }
+        PageHelper.startPage(vo.getPage(),pageSize);
+
+        List<ProductInfo> list = productInfoMapper.selectCondition(vo);
+        return new PageInfo<>(list);
     }
 }

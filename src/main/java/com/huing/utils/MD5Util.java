@@ -3,6 +3,10 @@ package com.huing.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author huing
+ * @create 2022-06-07 16:01
+ */
 public class MD5Util {
     /**
      * 1.MD5（message-digest algorithm 5）信息摘要算法，

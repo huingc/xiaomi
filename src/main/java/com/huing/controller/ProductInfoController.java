@@ -1,7 +1,9 @@
 package com.huing.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huing.pojo.ProductInfo;
+import com.huing.pojo.vo.ProductInfoVo;
 import com.huing.service.ProductInfoService;
 import com.huing.utils.FileNameUtil;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,11 +67,16 @@ public class ProductInfoController {
     }
 
 
+    /**
+     * ajax分页翻页处理
+     * @param vo
+     * @param session
+     */
     @ResponseBody
     @RequestMapping("/ajaxsplit")
-    public void ajaxsplit(int page, HttpSession session) {
-        PageInfo pageInfo = productInfoService.splitPage(page, PAGE_SIZE);
-
+    public void ajaxsplit(ProductInfoVo vo, HttpSession session) {
+        System.err.println(vo);
+        PageInfo pageInfo = productInfoService.splitPageVo(vo, PAGE_SIZE);
         session.setAttribute("info", pageInfo);
         return;
     }
@@ -134,6 +142,12 @@ public class ProductInfoController {
         return "update.jsp";
     }
 
+    /**
+     * 更新数据
+     * @param productInfo
+     * @param model
+     * @return
+     */
     @RequestMapping("/update")
     public String update(ProductInfo productInfo, Model model) {
 
@@ -158,6 +172,12 @@ public class ProductInfoController {
         return "forward:/prod/split.action";
     }
 
+    /**
+     * 删除
+     * @param pid
+     * @param model
+     * @return
+     */
     @RequestMapping("/delete")
     public String delete(int pid, Model model) {
         int result = -1;
@@ -170,12 +190,17 @@ public class ProductInfoController {
         if (result > 0) {
             model.addAttribute("msg", "删除成功");
         } else {
-            model.addAttribute("msg", "删除失败");
+            model.addAttribute("msg","该商品已经在订单中，不可删除");
         }
         return "forward:/prod/split.action";
     }
 
-    //批量删除
+    /**
+     * 批量删除
+     * @param pids
+     * @param model
+     * @return
+     */
     @RequestMapping("/deletebatch")
     public String deleteBatch(String pids,Model model) {
         String[] ps = pids.split(",");
@@ -187,8 +212,27 @@ public class ProductInfoController {
                 model.addAttribute("msg", "批量删除失败");
             }
         } catch (Exception e) {
-            model.addAttribute("msg","商品不可删除");
+            model.addAttribute("msg","该商品已经在订单中，不可删除");
         }
         return "forward:/prod/split.action";
     }
+
+
+    /**
+     * 多条件查询，未分页（弃）
+     * @param vo
+     * @param session
+     */
+    @ResponseBody
+    @RequestMapping("/condition")
+    public void condition(ProductInfoVo vo,HttpSession session){
+        List<ProductInfo> list = productInfoService.selectCondition(vo);
+
+        System.err.println(vo);
+        PageInfo<ProductInfo> pageInfo = new PageInfo<>(list);
+        session.setAttribute("info",pageInfo);
+        return ;
+    }
+
+
 }

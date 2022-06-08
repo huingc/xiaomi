@@ -2,6 +2,10 @@ package com.huing.utils;
 
 import java.util.UUID;
 
+/**
+ * @author huing
+ * @create 2022-06-07 16:01
+ */
 public class FileNameUtil {
 
 	/**

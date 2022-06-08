@@ -56,12 +56,13 @@
             商品名称：<input name="pname" id="pname">&nbsp;&nbsp;&nbsp;
             商品类型：<select name="typeid" id="typeid">
             <option value="-1">请选择</option>
-            <c:forEach items="${ptlist}" var="pt">
+            <c:forEach items="${typeList}" var="pt">
                 <option value="${pt.typeId}">${pt.typeName}</option>
             </c:forEach>
         </select>&nbsp;&nbsp;&nbsp;
             价格：<input name="lprice" id="lprice">-<input name="hprice" id="hprice">
-            <input type="button" value="查询" onclick="ajaxsplit(${info.pageNum})">
+<%--            <input type="button" value="查询" onclick="ajaxsplit(${info.pageNum})">--%>
+            <input type="button" value="查询" onclick="condition()">
         </form>
     </div>
     <br>
@@ -82,7 +83,7 @@
                 </div>
                 <!--显示分页后的商品-->
                 <div id="middle">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" >
                         <tr>
                             <th></th>
                             <th>商品名</th>
@@ -219,10 +220,14 @@
 <!--分页的AJAX实现-->
 <script type="text/javascript">
     function ajaxsplit(page) {
+        var pname = $("#pname").val();
+        var typeid = $("#typeid").val();
+        var lprice = $("#lprice").val();
+        var hprice = $("#hprice").val();
         //异步ajax分页请求
         $.ajax({
             url: "${pageContext.request.contextPath}/prod/ajaxsplit.action",
-            data: {"page": page},
+            data: {"page": page,"pname": pname,"typeid": typeid,"lprice": lprice,"hprice": hprice},
             type: "post",
             success: function () {
                 //重新加载分页显示的组件table
@@ -231,6 +236,24 @@
             }
         })
     };
+
+    //条件查询
+    function condition(){
+        var pname = $("#pname").val();
+        var typeid = $("#typeid").val();
+        var lprice = $("#lprice").val();
+        var hprice = $("#hprice").val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/prod/ajaxsplit.action",
+            data: {"pname": pname,"typeid": typeid,"lprice": lprice,"hprice": hprice},
+            type: "post",
+            success:function () {
+                // location.reload();
+                //刷新页面数据
+                $("#table").load("http://localhost:8080/admin/product.jsp #table");
+            }
+        });
+    }
 
 </script>
 

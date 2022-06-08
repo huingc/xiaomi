@@ -1,5 +1,9 @@
 package com.huing.pojo;
 
+/**
+ * @author huing
+ * @create 2022-06-07 16:01
+ */
 public class Admin {
     private Integer aId;
 

@@ -2,6 +2,10 @@ package com.huing.pojo;
 
 import java.util.Date;
 
+/**
+ * @author huing
+ * @create 2022-06-07 16:01
+ */
 public class ProductInfo {
     private Integer pId;
 

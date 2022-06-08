@@ -2,6 +2,7 @@ package com.huing.service;
 
 import com.github.pagehelper.PageInfo;
 import com.huing.pojo.ProductInfo;
+import com.huing.pojo.vo.ProductInfoVo;
 
 import java.util.List;
 
@@ -54,4 +55,18 @@ public interface ProductInfoService {
      * @return
      */
     int deleteBatch(String[] ids);
+
+    /**
+     * 多条件查询
+     * @param vo
+     * @return
+     */
+    List<ProductInfo> selectCondition(ProductInfoVo vo);
+
+    /**
+     * 多条件查询(分页)
+     * @param vo
+     * @return
+     */
+    PageInfo splitPageVo(ProductInfoVo vo,int pageSize);
 }

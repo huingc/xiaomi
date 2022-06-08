@@ -61,4 +61,33 @@
             #{pid}
         </foreach>
     </delete>
+
+    <select id="selectCondition" parameterType="com.huing.pojo.vo.ProductInfoVo" resultMap="ProductInfoMap">
+        select *
+        from product_info
+        <!--拼接条件-->
+        <where>
+            <!--商品名称不为空,拼接商品名称模糊查询-->
+            <if test="pname!=null and pname !='' ">
+                and p_name like '%${pname}%'
+            </if>
+            <!--商品类型不为空,拼接商品类型查询-->
+            <if test="typeid !=null and typeid !=-1 ">
+                and type_id = #{typeid}
+            </if>
+            <!--如果最低价格不为空 且大于0(vo在类中实现),最高价格为空,则查询大于最低价格的所有商品-->
+            <if test="lprice != null  and hprice == null">
+                and p_price &gt;= #{lprice}
+            </if>
+            <!--如果最低价格为空,最高价格不为空 且大于0,则查询小于最高价格的所有商品-->
+            <if test="lprice == null and hprice != null ">
+                and p_price &lt;= #{hprice}
+            </if>
+            <!--如果最低价格不为空,最高价格不为空,则查询介于最高价格和最低价格之间的所有商品-->
+            <if test="lprice != null and hprice != null ">
+                and p_price between #{lprice} and #{hprice}
+            </if>
+        </where>
+        order by p_id desc
+    </select>
 </mapper>
