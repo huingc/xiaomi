@@ -22,4 +22,9 @@
         from product_info
         order by p_id desc
     </select>
+
+    <insert id="insert">
+        INSERT INTO product_info(`p_name`, `p_content`, `p_price`, `p_image`, `p_number`, `type_id`, `p_date`)
+        VALUE (#{pName},#{pContent},#{pPrice},#{pImage},#{pNumber},#{typeId},#{pDate})
+    </insert>
 </mapper>

@@ -13,4 +13,6 @@ public interface ProductInfoMapper {
     List<ProductInfo> selectAll();
 
     List<ProductInfo> selectAllByPage();
+
+    int insert(ProductInfo info);
 }
