@@ -25,6 +25,40 @@
 
     <insert id="insert">
         INSERT INTO product_info(`p_name`, `p_content`, `p_price`, `p_image`, `p_number`, `type_id`, `p_date`)
-        VALUE (#{pName},#{pContent},#{pPrice},#{pImage},#{pNumber},#{typeId},#{pDate})
+            VALUE (#{pName},#{pContent},#{pPrice},#{pImage},#{pNumber},#{typeId},#{pDate})
     </insert>
+
+    <select id="selectById" resultMap="ProductInfoMap">
+        select *
+        from product_info
+        where p_id = #{pId}
+    </select>
+
+    <update id="updateById">
+        update product_info
+        set
+        <if test="pName != null">p_name = #{pName},</if>
+        <if test="pContent != null">p_content = #{pContent},</if>
+        <if test="pPrice != null">p_price = #{pPrice},</if>
+        <if test="pImage != null">p_image = #{pImage},</if>
+        <if test="pNumber != null">p_number = #{pNumber},</if>
+        type_id = #{typeId}
+        WHERE
+        p_id = #{pId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        from product_info
+        where p_id = #{pId}
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE
+        from product_info
+        where p_id in
+        <foreach collection="array" item="pid" separator="," open="(" close=")">
+            #{pid}
+        </foreach>
+    </delete>
 </mapper>

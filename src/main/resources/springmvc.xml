@@ -45,7 +45,7 @@
 <!--    &lt;!&ndash;视图解析器&ndash;&gt;-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/admin/"/>
-        <property name="suffix" value=".jsp"/>
+<!--        <property name="suffix" value=".jsp"/>-->
     </bean>
     <!-- 文件上传 -->
     <bean id="multipartResolver"

@@ -40,11 +40,11 @@ public class AdminController {
         if (admin != null) {
             //登陆成功
             model.addAttribute("admin",admin);
-            return "main";
+            return "main.jsp";
         } else {
             //登陆失败
             model.addAttribute("errmsg","用户名或密码不正确!");
-            return "login";
+            return "login.jsp";
         }
 
     }

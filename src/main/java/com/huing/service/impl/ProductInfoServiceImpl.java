@@ -44,4 +44,25 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     public int save(ProductInfo info) {
         return productInfoMapper.insert(info);
     }
+
+    @Override
+    public ProductInfo getById(int id) {
+
+        return productInfoMapper.selectById(id);
+    }
+
+    @Override
+    public int update(ProductInfo productInfo) {
+        return productInfoMapper.updateById(productInfo);
+    }
+
+    @Override
+    public int deleteById(int pid) {
+        return productInfoMapper.deleteById(pid);
+    }
+
+    @Override
+    public int deleteBatch(String[] ids) {
+        return productInfoMapper.deleteBatch(ids);
+    }
 }

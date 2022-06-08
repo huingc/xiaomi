@@ -37,6 +37,7 @@ public class ProductInfoController {
 
     /**
      * 显示全部商品不分页
+     *
      * @param model
      * @return
      */
@@ -45,11 +46,12 @@ public class ProductInfoController {
         List<ProductInfo> list = productInfoService.getAll();
 
         model.addAttribute("list", list);
-        return "product";
+        return "product.jsp";
     }
 
     /**
      * 显示第一页的5条记录
+     *
      * @param model
      * @return
      */
@@ -58,7 +60,7 @@ public class ProductInfoController {
         PageInfo pageInfo = productInfoService.splitPage(0, PAGE_SIZE);
 
         model.addAttribute("info", pageInfo);
-        return "product";
+        return "product.jsp";
     }
 
 
@@ -72,13 +74,14 @@ public class ProductInfoController {
     }
 
     /**
-     *异步ajax文件上传处理
+     * 异步ajax文件上传处理
+     *
      * @param pimage
      * @return
      */
     @ResponseBody
     @RequestMapping("/ajaxImg")
-    public Object ajaxImg(MultipartFile pimage, HttpServletRequest request){
+    public Object ajaxImg(MultipartFile pimage, HttpServletRequest request) {
 
         //提取生成文件名UUID+上传文件图片的后缀
         saveFileName = FileNameUtil.getUUIDFileName() + FileNameUtil.getFileType(pimage.getOriginalFilename());
@@ -86,14 +89,14 @@ public class ProductInfoController {
         String path = request.getServletContext().getRealPath("/image_big");
         //转存
         try {
-            pimage.transferTo(new File(path+File.separator+saveFileName));
+            pimage.transferTo(new File(path + File.separator + saveFileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //返回客户端JSON对象，封装图片的路径，为了在页面实现立即回显
         JSONObject object = new JSONObject();
-        object.put("imgurl",saveFileName);
+        object.put("imgurl", saveFileName);
 
         System.err.println(path);
 
@@ -101,22 +104,91 @@ public class ProductInfoController {
     }
 
     @RequestMapping("/save")
-    public String save(ProductInfo info,Model model){
+    public String save(ProductInfo info, Model model) {
         info.setpImage(saveFileName);
         info.setpDate(new Date());
         int result = -1;
         try {
             result = productInfoService.save(info);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (result > 0){
-            model.addAttribute("msg","增加成功");
-        }else {
-            model.addAttribute("msg","增加失败");
+        if (result > 0) {
+            model.addAttribute("msg", "增加成功");
+        } else {
+            model.addAttribute("msg", "增加失败");
         }
+
+        //清空saveFileName,为了下次增加和修改
+        saveFileName = "";
+
         //增加成功后，应该重新访问数据库
+        return "forward:/prod/split.action";
+    }
+
+    @RequestMapping("/one")
+    public String one(int pid, Model model) {
+        ProductInfo info = productInfoService.getById(pid);
+        model.addAttribute("prod", info);
+        return "update.jsp";
+    }
+
+    @RequestMapping("/update")
+    public String update(ProductInfo productInfo, Model model) {
+
+        if (!saveFileName.equals("")) {
+            productInfo.setpImage(saveFileName);
+        }
+        int result = -1;
+        try {
+            result = productInfoService.update(productInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (result > 0) {
+            model.addAttribute("msg", "修改成功");
+        } else {
+            model.addAttribute("msg", "修改失败");
+        }
+
+        saveFileName = "";
+
+        return "forward:/prod/split.action";
+    }
+
+    @RequestMapping("/delete")
+    public String delete(int pid, Model model) {
+        int result = -1;
+        try {
+            result = productInfoService.deleteById(pid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (result > 0) {
+            model.addAttribute("msg", "删除成功");
+        } else {
+            model.addAttribute("msg", "删除失败");
+        }
+        return "forward:/prod/split.action";
+    }
+
+    //批量删除
+    @RequestMapping("/deletebatch")
+    public String deleteBatch(String pids,Model model) {
+        String[] ps = pids.split(",");
+        try {
+            int result = productInfoService.deleteBatch(ps);
+            if (result > 0) {
+                model.addAttribute("msg", "批量删除成功");
+            } else {
+                model.addAttribute("msg", "批量删除失败");
+            }
+        } catch (Exception e) {
+            model.addAttribute("msg","商品不可删除");
+        }
         return "forward:/prod/split.action";
     }
 }

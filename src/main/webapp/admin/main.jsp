@@ -36,7 +36,7 @@
 					<div id="ltop">
 						<div id="lts">
 							<img src="${pageContext.request.contextPath}/images/logo.jpg" /><br />
-							<p style="text-align: center;">随机访客</p>
+							<p style="text-align: center;">${admin.aName}</p>
 						</div>
 					</div>
 					<div id="lbottom">
