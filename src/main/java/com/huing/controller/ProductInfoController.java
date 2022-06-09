@@ -53,14 +53,27 @@ public class ProductInfoController {
     }
 
     /**
-     * 显示第一页的5条记录
+     * 显示第一页的5条记录或者（当前页面）
      *
      * @param model
      * @return
      */
     @RequestMapping("/split")
-    public String split(Model model) {
-        PageInfo pageInfo = productInfoService.splitPage(0, PAGE_SIZE);
+    public String split(Model model, HttpSession session) {
+
+        PageInfo pageInfo = null;
+
+        Object vo = session.getAttribute("prodvo");
+        Object vo_delete = session.getAttribute("deleteProdVo");
+        if (vo != null) {
+            pageInfo = productInfoService.splitPageVo((ProductInfoVo) vo, PAGE_SIZE);
+            session.removeAttribute("prodvo");
+        }if (vo_delete != null){
+            pageInfo = productInfoService.splitPageVo((ProductInfoVo) vo_delete, PAGE_SIZE);
+            session.removeAttribute("deleteProdVo");
+        } else {
+            pageInfo = productInfoService.splitPage(0, PAGE_SIZE);
+        }
 
         model.addAttribute("info", pageInfo);
         return "product.jsp";
@@ -69,6 +82,7 @@ public class ProductInfoController {
 
     /**
      * ajax分页翻页处理
+     *
      * @param vo
      * @param session
      */
@@ -111,6 +125,13 @@ public class ProductInfoController {
         return object.toString();
     }
 
+    /**
+     * 新增商品
+     *
+     * @param info
+     * @param model
+     * @return
+     */
     @RequestMapping("/save")
     public String save(ProductInfo info, Model model) {
         info.setpImage(saveFileName);
@@ -135,15 +156,27 @@ public class ProductInfoController {
         return "forward:/prod/split.action";
     }
 
+    /**
+     * 根据Id查询商品信息
+     *
+     * @param pid
+     * @param model
+     * @return
+     */
     @RequestMapping("/one")
-    public String one(int pid, Model model) {
+    public String one(int pid, ProductInfoVo vo, Model model, HttpSession session) {
         ProductInfo info = productInfoService.getById(pid);
         model.addAttribute("prod", info);
+
+        //将多条件及页码放入session中，更新结束后读取条件和页码
+        session.setAttribute("prodvo", vo);
+
         return "update.jsp";
     }
 
     /**
      * 更新数据
+     *
      * @param productInfo
      * @param model
      * @return
@@ -174,12 +207,13 @@ public class ProductInfoController {
 
     /**
      * 删除
+     *
      * @param pid
      * @param model
      * @return
      */
     @RequestMapping("/delete")
-    public String delete(int pid, Model model) {
+    public String delete(int pid, Model model, HttpSession session, ProductInfoVo vo) {
         int result = -1;
         try {
             result = productInfoService.deleteById(pid);
@@ -189,20 +223,23 @@ public class ProductInfoController {
 
         if (result > 0) {
             model.addAttribute("msg", "删除成功");
+            //删除成功后，需要携带当前页码和多条件
+            session.setAttribute("deleteProdVo",vo);
         } else {
-            model.addAttribute("msg","该商品已经在订单中，不可删除");
+            model.addAttribute("msg", "该商品已经在订单中，不可删除");
         }
         return "forward:/prod/split.action";
     }
 
     /**
      * 批量删除
+     *
      * @param pids
      * @param model
      * @return
      */
     @RequestMapping("/deletebatch")
-    public String deleteBatch(String pids,Model model) {
+    public String deleteBatch(String pids, Model model) {
         String[] ps = pids.split(",");
         try {
             int result = productInfoService.deleteBatch(ps);
@@ -212,7 +249,7 @@ public class ProductInfoController {
                 model.addAttribute("msg", "批量删除失败");
             }
         } catch (Exception e) {
-            model.addAttribute("msg","该商品已经在订单中，不可删除");
+            model.addAttribute("msg", "该商品已经在订单中，不可删除");
         }
         return "forward:/prod/split.action";
     }
@@ -220,18 +257,19 @@ public class ProductInfoController {
 
     /**
      * 多条件查询，未分页（弃）
+     *
      * @param vo
      * @param session
      */
     @ResponseBody
     @RequestMapping("/condition")
-    public void condition(ProductInfoVo vo,HttpSession session){
+    public void condition(ProductInfoVo vo, HttpSession session) {
         List<ProductInfo> list = productInfoService.selectCondition(vo);
 
         System.err.println(vo);
         PageInfo<ProductInfo> pageInfo = new PageInfo<>(list);
-        session.setAttribute("info",pageInfo);
-        return ;
+        session.setAttribute("info", pageInfo);
+        return;
     }
 
 

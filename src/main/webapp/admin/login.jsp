@@ -41,7 +41,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 						<tr>
 							<td></td>
 							<td><input type="submit" value="登录" class="td3">
-								<a href="${pageContext.request.contextPath}/regist.jsp"><input type="button" value="注册" class="td3	"></a>
+								<a href="${pageContext.request.contextPath}/user/toregist.action"><input type="button" value="注册" class="td3	"></a>
 							</td>
 						</tr>
 					</table>

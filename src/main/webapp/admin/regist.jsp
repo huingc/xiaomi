@@ -16,14 +16,14 @@ pageEncoding="UTF-8" isELIgnored="false"%>
 	<body>
 		<div id="login">
 			<div id="top">
-				<img src="images/cloud.jpg" /><span>REGIST</span>
+				<img src="${pageContext.request.contextPath}/images/cloud.jpg" /><span>REGIST</span>
 			</div>
 			<div id="bottom">
-				<form action="main.jsp" method="get">
+				<form action="${pageContext.request.contextPath}/user/regist.action" method="get">
 					<table border="0px" id="table">
 						<tr>
 							<td class="td1">用户名：</td>
-							<td><input type="text" placeholder="Username" class="td2" name="myname"></td>
+							<td><input type="text" placeholder="UserName" class="td2" name="username"></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -31,7 +31,7 @@ pageEncoding="UTF-8" isELIgnored="false"%>
 						</tr>
 						<tr>
 							<td class="td1">密码：</td>
-							<td><input type="password" placeholder="Password" class="td2" name="mypwd"></td>
+							<td><input type="password" placeholder="Password" class="td2" name="password"></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -45,6 +45,7 @@ pageEncoding="UTF-8" isELIgnored="false"%>
 						</tr>
 					</table>
 				</form>
+				${msg}
 			</div>
 
 		</div>
