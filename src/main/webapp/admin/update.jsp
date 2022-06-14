@@ -50,7 +50,8 @@
 			</script>
 <script type="text/javascript">
 	function myclose(ispage) {
-		window.location="${pageContext.request.contextPath}/admin/product?flag=split&ispage="+ispage;
+		//window.location="${pageContext.request.contextPath}/admin/product?flag=split&ispage="+ispage;
+		window.location="${pageContext.request.contextPath}/prod/split.action?page="+ispage;
 		//window.close();
 	}
 </script>
@@ -138,7 +139,7 @@
 								<input type="submit" value="提交" class="btn btn-success">
 							</td>
 							<td>
-								<input type="reset" value="取消" class="btn btn-default" onclick="myclose(1)">
+								<input type="reset" value="取消" class="btn btn-default" onclick="myclose(${param.page})">
 							</td>
 						</tr>
 					</table>

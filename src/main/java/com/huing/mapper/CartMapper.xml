@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huing.mapper.CartMapper">
+    <resultMap id="cartandproduct" type="com.huing.pojo.Cart">
+        <result column="p_id" property="p_id"/>
+        <result column="num" property="num"/>
+        <collection property="productInfo" ofType="ProductInfo">
+            <id column="p_id" property="pId"/>
+            <result column="p_name" property="pName"/>
+            <result column="p_image" property="pImage"/>
+            <result column="p_content" property="pContent"/>
+            <result column="p_price" property="pPrice"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByUid" resultMap="cartandproduct">
+        SELECT c.p_id,p.`p_image`,p.`p_name`,p.`p_content`,p.`p_price`,c.num
+        FROM `cart` c,`product_info` p
+        WHERE c.p_id=p.`p_id` AND c.uid=#{uid}
+    </select>
+
+    <select id="selectByPid" resultType="com.huing.pojo.Cart">
+        select *
+        from cart
+        where p_id=#{p_id} and uid=#{uid}
+    </select>
+    <update id="update">
+        update cart
+        set num = #{num}
+        where uid=#{uid} and p_id=#{p_id}
+    </update>
+    <insert id="addCart">
+        insert into cart(uid,p_id,num) values (#{uid},#{p_id},#{num})
+    </insert>
+
+    <delete id="delCart">
+        delete from cart where uid=#{uid} and p_id=#{p_id}
+    </delete>
+
+    <select id="selectBypidanduid" resultMap="cartandproduct">
+        SELECT c.p_id,p.`p_image`,p.`p_name`,p.`p_content`,p.`p_price`,c.num
+        FROM `cart` c,`product_info` p
+        WHERE c.p_id=p.`p_id` AND c.uid=#{uid} and c.p_id=#{p_id}
+    </select>
+</mapper>

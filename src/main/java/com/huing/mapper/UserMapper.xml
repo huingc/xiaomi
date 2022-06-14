@@ -29,4 +29,24 @@
         WHERE username = #{username}
     </select>
 
+
+    <update id="updateUser">
+        update `t_user` set username=#{username},phone=#{phone},email=#{email},
+         gender=#{gender} where uid=#{uid}
+    </update>
+
+
+    <update id="updatePwd">
+        update `t_user` set password=#{password} where uid=#{uid}
+    </update>
+
+    <insert id="resetUser" useGeneratedKeys="true"  keyProperty="rid">
+        INSERT INTO reset (username, phone, email)
+        VALUES (#{username},#{phone},#{email})
+    </insert>
+
+    <update id="updateReset">
+        update `t_user` set password=#{password} where username=#{username}
+    </update>
+
 </mapper>

@@ -24,7 +24,7 @@
             <table border="0px" id="table">
                 <tr>
                     <td class="td1">用户名：</td>
-                    <td><input type="text" value="admin" placeholder="Username" class="td2" name="username"></td>
+                    <td><input type="text" placeholder="Username" class="td2" name="username"></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -32,17 +32,18 @@
                 </tr>
                 <tr>
                     <td class="td1">密码：</td>
-                    <td><input type="password"  value="000000" placeholder="Password" class="td2" name="password"></td>
+                    <td><input type="password" placeholder="Password" class="td2" name="password"></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><span id="pwderr"></span></td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td> ${msg}</td>
                     <td><input type="submit" value="登录" class="td3">
                         <a href="${pageContext.request.contextPath}/user/toregist.action"><input type="button" value="注册" class="td3	"></a>
-                        <br><a href="${pageContext.request.contextPath}/user/admin.action">管理员</a>
+                        <br><a href="${pageContext.request.contextPath}/user/admin.action"><input type="button" value="管理员" class="td3	"></a>
+                        <a href="${pageContext.request.contextPath}/user/toReset.action"><input type="button" value="重置密码" class="td3	"></a>
                     </td>
                 </tr>
             </table>

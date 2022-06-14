@@ -24,7 +24,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 					<table border="0px" id="table">
 						<tr>
 							<td class="td1">用户名：</td>
-							<td><input type="text" value="admin" placeholder="Username" class="td2" name="name"></td>
+							<td><input type="text" placeholder="Username" class="td2" name="name"></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -32,7 +32,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 						</tr>
 						<tr>
 							<td class="td1">密码：</td>
-							<td><input type="password"  value="000000" placeholder="Password" class="td2" name="pwd"></td>
+							<td><input type="password" placeholder="Password" class="td2" name="pwd"></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -47,6 +47,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 					</table>
 				</form>
 				${errmsg}
+
 			</div>
 
 		</div>

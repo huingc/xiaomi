@@ -10,5 +10,8 @@ import java.util.List;
  * @create 2022-06-07 16:01
  */
 public interface AdminMapper {
+
     Admin findByName(String name);
+
+
 }

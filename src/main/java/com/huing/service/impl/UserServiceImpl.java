@@ -1,6 +1,7 @@
 package com.huing.service.impl;
 
 import com.huing.mapper.UserMapper;
+import com.huing.pojo.Reset;
 import com.huing.pojo.User;
 import com.huing.service.UserService;
 import com.huing.utils.MD5Util;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -100,6 +102,86 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public List<User> findListUser() {
+        return userMapper.findListUser();
+    }
+
+    @Override
+    public List<User> queryList(String username) {
+        return userMapper.queryList(username);
+    }
+
+    @Override
+    public User findUsersById(int uid) {
+        return userMapper.findUsersById(uid);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
+    }
+
+    @Override
+    public int updatePwd(User user) {
+        User user1 = userMapper.findUsersById(user.getUid());
+        String sqlpwd = user1.getPassword();//获取数据库里面的密码
+        String sal = user1.getSalt();//获取盐值
+
+        //输入的旧密码和数据库里面的密码进行比较
+        String oldMd5Password = getMD5Password(user.getOldpwd(), sal);
+        if (sqlpwd.equals(oldMd5Password)){//判断旧密码是否一样
+            if (user.getPassword().equals(user.getPwd())){//判断输入的俩次密码是否一致
+                String newMd5Password = getMD5Password(user.getPassword(), sal);//给新密码加密
+                user.setPassword(newMd5Password);
+                userMapper.updatePwd(user);
+            }
+            else {
+                return -1;
+            }
+
+        }else {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<Reset> findListReset() {
+        return userMapper.findListReset();
+    }
+
+    @Override
+    public void resetUser(Reset reset) {
+        userMapper.resetUser(reset);
+    }
+
+    @Override
+    public int deleteUser(int rid) {
+        return userMapper.deleteUser(rid);
+    }
+
+    @Override
+    public void updateReset(User user){
+        User user1 = userMapper.findByUsername(user.getUsername());
+        String sal = user1.getSalt();//获取盐值
+        String resetPwd = "000000";//设置默认密码
+        String newMd5Password = getMD5Password(resetPwd, sal);//给新密码加密
+        user.setPassword(newMd5Password);
+        userMapper.updateReset(user);
+    }
+
+    @Override
+    public void deleteReset(String username) {
+        userMapper.deleteReset(username);
+    }
+
+    @Override
+    public User findReset(String username) {
+        return userMapper.findReset(username);
+    }
+
     /**
      * 定义一个md5算法的加密处理
      */
@@ -111,4 +193,7 @@ public class UserServiceImpl implements UserService {
         //返回加密之后的密码
         return password;
     }
+
+
+
 }

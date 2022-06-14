@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huing.mapper.BillMapper">
+
+    <resultMap id="BillMap" type="com.huing.pojo.Bill">
+        <id column="bid" property="bid"/>
+        <result column="uid" property="uid"/>
+        <result column="count" property="count"/>
+        <result column="total" property="total"/>
+    </resultMap>
+
+    <select id="selectlist" resultMap="BillMap">
+        select *
+        from bill
+    </select>
+
+    <select id="selectAllByPage" resultMap="BillMap">
+        select *
+        from bill
+        order by date desc
+    </select>
+
+    <select id="getById" resultMap="BillMap">
+        select *
+        from bill
+        where bid=#{bid}
+    </select>
+
+    <delete id="deleteById">
+        delete from bill where bid=#{bid}
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE
+        from bill
+        where bid in
+        <foreach collection="array" item="bid" separator="," open="(" close=")">
+            #{bid}
+        </foreach>
+    </delete>
+
+    <select id="selectCondition" parameterType="com.huing.pojo.vo.BillVo" resultMap="BillMap">
+        select *
+        from bill
+        <!--拼接条件-->
+        <where>
+            <!--商品名称不为空,拼接商品名称模糊查询-->
+            <if test="bid!=null and bid !=-1 ">
+                and bid=#{bid}
+            </if>
+            <!--商品类型不为空,拼接商品类型查询-->
+            <if test="uid !=null and uid !=-1 ">
+                and uid=#{uid}
+            </if>
+        </where>
+        order by date desc
+    </select>
+
+    <resultMap id="billinfoandproduct" type="com.huing.pojo.BillInfo">
+        <result column="bid" property="bid"/>
+        <result column="p_id" property="p_id"/>
+        <result column="num" property="num"/>
+        <collection property="productInfo" ofType="ProductInfo">
+            <id column="p_id" property="pId"/>
+            <result column="p_name" property="pName"/>
+            <result column="p_image" property="pImage"/>
+            <result column="p_content" property="pContent"/>
+            <result column="p_price" property="pPrice"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByBid" resultMap="billinfoandproduct">
+        SELECT b.bid,p.`p_id`,p.`p_name`,p.`p_image`,p.`p_content`,p.`p_price`,b.`num`
+        FROM bill_info b,product_info p
+        WHERE b.`p_id`=p.`p_id` AND b.`bid`=#{bid}
+    </select>
+
+    <insert id="addBill">
+        insert into bill(uid,count,total,date) value (#{uid},#{count},#{total},#{date})
+    </insert>
+
+    <select id="selectgetbid" resultType="com.huing.pojo.Bill">
+        SELECT *
+        FROM bill
+        WHERE uid = #{uid}
+        ORDER BY bid DESC
+        LIMIT 1
+    </select>
+
+    <insert id="addbillinfo">
+        insert into bill_info(bid,p_id,num) value (#{bid},#{p_id},#{num})
+    </insert>
+
+    <resultMap id="billandbillinfoandproduct" type="com.huing.pojo.Bill">
+        <id property="bid" column="bid"/>
+        <result property="total" column="total"/>
+        <result property="date" column="date"/>
+        <collection property="billInfo" ofType="BillInfo">
+            <result column="bid" property="bid"/>
+            <result column="p_id" property="p_id"/>
+            <result column="num" property="num"/>
+            <collection property="productInfo" ofType="ProductInfo">
+                <id column="p_id" property="pId"/>
+                <result column="p_name" property="pName"/>
+                <result column="p_content" property="pContent"/>
+                <result column="p_image" property="pImage"/>
+                <result column="p_price" property="pPrice"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="selectbillByuid" resultMap="billandbillinfoandproduct">
+        SELECT bill.`bid`,bill.`date`,bill.`total`,bill_info.`p_id`,product_info.`p_name`,product_info.`p_content`,product_info.`p_image`,product_info.`p_price`,bill_info.`num`
+        FROM bill,bill_info,product_info
+        WHERE bill.`bid`=bill_info.`bid` AND bill_info.`p_id`=product_info.`p_id` AND bill.`uid`=#{uid}
+    </select>
+</mapper>

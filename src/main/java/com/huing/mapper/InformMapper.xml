@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huing.mapper.InformMapper">
+
+    <select id="selectAll" resultType="com.huing.pojo.Inform">
+        select *
+        from inform
+    </select>
+
+    <select id="informList" resultType="com.huing.pojo.Inform">
+        select *
+        from inform
+        where iName like CONCAT('%',#{iName},'%')
+    </select>
+
+    <insert id="addInform">
+        INSERT INTO inform(`iName`,`iContent`,`updateTime`)
+            VALUE (#{iName},#{iContent},#{updateTime})
+    </insert>
+
+    <select id="selectInform" resultType="com.huing.pojo.Inform">
+        select *
+        from inform
+        where iId = #{iId}
+    </select>
+
+    <update id="updateInform">
+        update inform
+        set
+        iName = #{iName},
+        iContent = #{iContent},
+        WHERE
+        iId = #{iId}
+    </update>
+
+    <delete id="deleteInform">
+        DELETE
+        from inform
+        where iId = #{iId}
+    </delete>
+    <select id="getInformId" resultType="com.huing.pojo.Inform">
+        select *
+        from inform
+        where iId = #{iId}
+    </select>
+
+    <select id="newInform" resultType="com.huing.pojo.Inform">
+        select *
+        from inform
+        order by updateTime desc
+        limit 1
+    </select>
+</mapper>

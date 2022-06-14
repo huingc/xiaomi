@@ -16,6 +16,24 @@ public class User extends BaseEntity implements Serializable {
     private Integer gender;
     private String avatar;
     private Integer isDelete;
+    private String oldpwd;
+    private String pwd;
+
+    public String getOldpwd() {
+        return oldpwd;
+    }
+
+    public void setOldpwd(String oldpwd) {
+        this.oldpwd = oldpwd;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
 
     public Integer getUid() {
         return uid;

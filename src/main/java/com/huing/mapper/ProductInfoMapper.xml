@@ -90,4 +90,18 @@
         </where>
         order by p_id desc
     </select>
+
+    <select id="findHotList" resultMap="ProductInfoMap">
+        select *
+        from product_info
+        where status = 1
+        order by p_number LIMIT 0,4
+    </select>
+
+    <select id="findNewList" resultMap="ProductInfoMap">
+        select *
+        from product_info
+        where status = 1
+        order by p_date desc LIMIT 0,4
+    </select>
 </mapper>

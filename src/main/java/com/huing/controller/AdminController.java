@@ -31,7 +31,7 @@ public class AdminController {
     //实现登陆判断，并进行相应跳转
     @RequestMapping("/login")
     public String login(String name, String pwd, Model model, HttpSession session) {
-
+        System.out.println(name+"==========="+pwd);
         List<ProductType> typeList = productTypeService.getAll();
         session.getServletContext().setAttribute("typeList", typeList);
 

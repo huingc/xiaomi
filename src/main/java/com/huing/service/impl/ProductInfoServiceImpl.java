@@ -83,4 +83,16 @@ public class ProductInfoServiceImpl implements ProductInfoService {
         List<ProductInfo> list = productInfoMapper.selectCondition(vo);
         return new PageInfo<>(list);
     }
+
+    @Override
+    public List<ProductInfo> findHotList() {
+        List<ProductInfo> list = productInfoMapper.findHotList();
+        return list;
+    }
+
+    @Override
+    public List<ProductInfo> findNewList() {
+        List<ProductInfo> list = productInfoMapper.findNewList();
+        return list;
+    }
 }

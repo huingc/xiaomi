@@ -60,4 +60,18 @@ public interface ProductInfoMapper {
      * @return
      */
     List<ProductInfo> selectCondition(ProductInfoVo vo);
+
+    /**
+     * 查询热销商品的前四名
+     *
+     * @return 热销商品前四名的集合
+     */
+    List<ProductInfo> findHotList();
+
+    /**
+     * 查询新品商品的前四名
+     *
+     * @return 新品商品前四名的集合
+     */
+    List<ProductInfo> findNewList();
 }
